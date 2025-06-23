@@ -1,3 +1,4 @@
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white text-gray-800 p-6">
