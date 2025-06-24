@@ -99,7 +99,7 @@ export default function HomePage() {
                 alt="Team A Logo"
                 width={64}
                 height={64}
-                className="mx-auto mb-2"
+                className="mx-auto mb-2 object-contain"
               />
               <h3 className="text-xl font-semibold text-blue-600 mb-2">
                 Team A – Muzammil (C)
@@ -115,7 +115,13 @@ export default function HomePage() {
             <div className="text-3xl font-extrabold text-red-500">⚡ VS ⚡</div>
 
             <div className="text-center p-4 rounded-xl bg-white border shadow w-64">
-              <div className="w-16 h-16 mx-auto mb-2"></div> {/* Placeholder to match Team A’s logo space */}
+              <Image
+                src="/team-b-logo.png"
+                alt="Team B Logo"
+                width={64}
+                height={64}
+                className="mx-auto mb-2 object-contain"
+              />
               <h3 className="text-xl font-semibold text-blue-600 mb-2">
                 Team B – Sohail (C)
               </h3>
