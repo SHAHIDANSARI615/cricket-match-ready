@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 
 const players = [
   { name: "Muzammil (C)", role: "Batter", team: "A" },
@@ -25,13 +26,13 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white text-gray-800 p-6">
       {/* Navigation */}
-      <nav className="flex justify-between items-center mb-6">
+      <nav className="flex justify-between items-center mb-6 relative">
         <h1 className="text-xl font-bold text-blue-700">🏏 DSG Match</h1>
-        <div className="relative">
+        <div className="relative group">
           <button className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
             ☰ Menu
           </button>
-          <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow text-sm">
+          <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow text-sm hidden group-hover:block">
             <button
               onClick={() => setView("home")}
               className="block w-full px-4 py-2 hover:bg-blue-50 text-left"
@@ -65,6 +66,13 @@ export default function Home() {
 
           <section className="flex justify-center items-center gap-4 mb-10">
             <div className="text-center p-4 rounded-xl bg-white border shadow w-64">
+              <Image
+                src="/team-a-logo.png"
+                alt="Team A Logo"
+                width={64}
+                height={64}
+                className="mx-auto mb-2"
+              />
               <h3 className="text-xl font-semibold text-blue-600 mb-2">
                 Team A – Muzammil (C)
               </h3>
@@ -75,7 +83,9 @@ export default function Home() {
                 <li>Abdul Shahid – All Rounder</li>
               </ul>
             </div>
-            <div className="text-2xl font-bold text-red-500">⚡ VS ⚡</div>
+
+            <div className="text-3xl font-extrabold text-red-500">⚡ VS ⚡</div>
+
             <div className="text-center p-4 rounded-xl bg-white border shadow w-64">
               <h3 className="text-xl font-semibold text-blue-600 mb-2">
                 Team B – Sohail (C)
@@ -93,12 +103,10 @@ export default function Home() {
             <h2 className="text-2xl font-semibold text-green-600 mb-4">📋 Match Rules</h2>
             <ul className="list-disc list-inside text-lg space-y-2">
               <li>
-                <strong>Net Catches:</strong> Catches taken off the nets will be
-                considered valid.
+                <strong>Net Catches:</strong> Catches taken off the nets will be considered valid.
               </li>
               <li>
-                <strong>Bowling Restrictions:</strong> Each team will have 3
-                bowlers. A maximum of 2 overs can be bowled by any 3 bowlers.
+                <strong>Bowling Restrictions:</strong> Each team will have 3 bowlers. A maximum of 2 overs can be bowled by any 3 bowlers.
               </li>
             </ul>
           </section>
@@ -109,14 +117,14 @@ export default function Home() {
             🧢 Player List
           </h2>
           <div className="flex justify-center gap-4 mb-4">
-            {['All', 'Batter', 'Bowler', 'All Rounder'].map((type) => (
+            {["All", "Batter", "Bowler", "All Rounder"].map((type) => (
               <button
                 key={type}
                 onClick={() => setFilter(type)}
                 className={`px-3 py-1 rounded-full border text-sm font-medium ${
                   filter === type
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-blue-600'
+                    ? "bg-blue-600 text-white"
+                    : "bg-white text-blue-600"
                 }`}
               >
                 {type}
