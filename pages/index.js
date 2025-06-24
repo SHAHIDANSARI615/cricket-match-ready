@@ -42,33 +42,33 @@ export default function HomePage() {
         <div className="relative">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
+            className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors duration-200"
             aria-label="Toggle menu"
           >
             ☰ Menu
           </button>
           <div
-            className={`absolute right-0 mt-2 w-32 bg-white border rounded shadow text-sm transform transition-all duration-300 origin-top-right ${
+            className={`absolute right-0 mt-2 w-32 bg-white border rounded shadow text-sm transform transition-all duration-300 ease-in-out origin-top-right ${
               menuOpen
-                ? "opacity-100 scale-100"
-                : "opacity-0 scale-95 pointer-events-none"
+                ? "opacity-100 scale-100 translate-y-0"
+                : "opacity-0 scale-95 translate-y-[-10px] pointer-events-none"
             }`}
           >
             <button
               onClick={() => handleMenuClick("home")}
-              className="block w-full px-4 py-2 hover:bg-blue-50 text-left"
+              className="block w-full px-4 py-2 hover:bg-blue-50 text-left transition-colors duration-150"
             >
               Home
             </button>
             <button
               onClick={() => handleMenuClick("players")}
-              className="block w-full px-4 py-2 hover:bg-blue-50 text-left"
+              className="block w-full px-4 py-2 hover:bg-blue-50 text-left transition-colors duration-150"
             >
               Players
             </button>
             <button
               onClick={() => handleMenuClick("contact")}
-              className="block w-full px-4 py-2 hover:bg-blue-50 text-left"
+              className="block w-full px-4 py-2 hover:bg-blue-50 text-left transition-colors duration-150"
             >
               Contact
             </button>
