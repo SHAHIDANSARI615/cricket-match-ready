@@ -76,11 +76,6 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Debug Current View */}
-      <div className="text-center mb-4">
-        <p className="text-sm text-gray-500">Current view: {view}</p>
-      </div>
-
       {/* Page Views */}
       {view === "home" && (
         <>
@@ -120,6 +115,7 @@ export default function HomePage() {
             <div className="text-3xl font-extrabold text-red-500">⚡ VS ⚡</div>
 
             <div className="text-center p-4 rounded-xl bg-white border shadow w-64">
+              <div className="w-16 h-16 mx-auto mb-2"></div> {/* Placeholder to match Team A’s logo space */}
               <h3 className="text-xl font-semibold text-blue-600 mb-2">
                 Team B – Sohail (C)
               </h3>

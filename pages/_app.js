@@ -1,11 +1,5 @@
-import '../styles/globals.css'
-import Navbar from '../components/Navbar' // ✅ Import Navbar component
+import '../styles/globals.css';
 
 export default function App({ Component, pageProps }) {
-  return (
-    <>
-      <Navbar /> {/* ✅ Navbar will appear on all pages */}
-      <Component {...pageProps} />
-    </>
-  )
+  return <Component {...pageProps} />;
 }
