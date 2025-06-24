@@ -14,9 +14,20 @@ const players = [
   { name: "Sohaib", role: "All Rounder", team: "B" },
 ];
 
-export default function Home() {
+export default function HomePage() {
   const [view, setView] = useState("home");
   const [filter, setFilter] = useState("All");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleMenuClick = (target) => {
+    console.log("Menu clicked, target:", target); // Debugging
+    if (target === "contact") {
+      window.location.href = "mailto:sa6426533@gmail.com";
+    } else {
+      setView(target);
+    }
+    setMenuOpen(false);
+  };
 
   const filteredPlayers =
     filter === "All"
@@ -25,38 +36,60 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white text-gray-800 p-6">
-      {/* Navigation */}
+      {/* Navbar */}
       <nav className="flex justify-between items-center mb-6 relative">
         <h1 className="text-xl font-bold text-blue-700">🏏 DSG Match</h1>
-        <div className="relative group">
-          <button className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+        <div className="relative">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
+            aria-label="Toggle menu"
+          >
             ☰ Menu
           </button>
-          <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow text-sm hidden group-hover:block">
+          <div
+            className={`absolute right-0 mt-2 w-32 bg-white border rounded shadow text-sm transform transition-all duration-300 origin-top-right ${
+              menuOpen
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-95 pointer-events-none"
+            }`}
+          >
             <button
-              onClick={() => setView("home")}
+              onClick={() => handleMenuClick("home")}
               className="block w-full px-4 py-2 hover:bg-blue-50 text-left"
             >
               Home
             </button>
             <button
-              onClick={() => setView("players")}
+              onClick={() => handleMenuClick("players")}
               className="block w-full px-4 py-2 hover:bg-blue-50 text-left"
             >
               Players
+            </button>
+            <button
+              onClick={() => handleMenuClick("contact")}
+              className="block w-full px-4 py-2 hover:bg-blue-50 text-left"
+            >
+              Contact
             </button>
           </div>
         </div>
       </nav>
 
-      {view === "home" ? (
+      {/* Debug Current View */}
+      <div className="text-center mb-4">
+        <p className="text-sm text-gray-500">Current view: {view}</p>
+      </div>
+
+      {/* Page Views */}
+      {view === "home" && (
         <>
           <header className="text-center mb-10">
             <h2 className="text-4xl font-bold text-blue-700 mb-2">
               Danish School Group Cricket Match
             </h2>
             <p className="text-lg font-medium">
-              📅 7 July 2025 &nbsp; | &nbsp; 🕒 10:00 AM – 12:00 PM
+              📅 7 July 2025 | 🕒 10:00 AM – 12:00 PM
             </p>
             <p className="text-sm text-gray-600">
               📍 Lalbagh Rd, in front of MPEB Office, near Keer Banglow,
@@ -100,18 +133,24 @@ export default function Home() {
           </section>
 
           <section className="bg-white shadow-md rounded-2xl p-6 max-w-3xl mx-auto border border-gray-100">
-            <h2 className="text-2xl font-semibold text-green-600 mb-4">📋 Match Rules</h2>
+            <h2 className="text-2xl font-semibold text-green-600 mb-4">
+              📋 Match Rules
+            </h2>
             <ul className="list-disc list-inside text-lg space-y-2">
               <li>
-                <strong>Net Catches:</strong> Catches taken off the nets will be considered valid.
+                <strong>Net Catches:</strong> Catches taken off the nets will be
+                considered valid.
               </li>
               <li>
-                <strong>Bowling Restrictions:</strong> Each team will have 3 bowlers. A maximum of 2 overs can be bowled by any 3 bowlers.
+                <strong>Bowling Restrictions:</strong> Each team will have 3
+                bowlers. A maximum of 2 overs can be bowled by any 3 bowlers.
               </li>
             </ul>
           </section>
         </>
-      ) : (
+      )}
+
+      {view === "players" && (
         <section>
           <h2 className="text-2xl font-bold text-blue-700 text-center mb-6">
             🧢 Player List
