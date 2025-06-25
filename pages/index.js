@@ -2,16 +2,16 @@ import { useState } from "react";
 import Image from "next/image";
 
 const players = [
-  { name: "Muzammil (C)", role: "Batter", team: "A" },
-  { name: "Wakar", role: "All Rounder", team: "A" },
-  { name: "Faizan", role: "All Rounder", team: "A" },
+  { name: "Muzammil Ahmed (C)", role: "Batter", team: "A" },
+  { name: "Wakar Ansari", role: "All Rounder", team: "A" },
+  { name: "Faizan Akhtar", role: "All Rounder", team: "A" },
   { name: "Farhan Lala", role: "Bowler", team: "A" },
   { name: "Abdul Shahid", role: "All Rounder", team: "A" },
-  { name: "Sohail (C)", role: "All Rounder", team: "B" },
-  { name: "Shahid", role: "All Rounder", team: "B" },
-  { name: "Zubair", role: "Batter", team: "B" },
-  { name: "Tehseen", role: "Batter", team: "B" },
-  { name: "Sohaib", role: "All Rounder", team: "B" },
+  { name: "Sohail Ansari (C)", role: "All Rounder", team: "B" },
+  { name: "Shahid Ahmed", role: "All Rounder", team: "B" },
+  { name: "Zubair Iqbal", role: "Batter", team: "B" },
+  { name: "Tehseen Ansari", role: "Batter", team: "B" },
+  { name: "Sohaib Ansari", role: "All Rounder", team: "B" },
 ];
 
 export default function HomePage() {
@@ -102,11 +102,11 @@ export default function HomePage() {
                 className="mx-auto mb-2 object-contain"
               />
               <h3 className="text-xl font-semibold text-blue-600 mb-2">
-                Team A – Muzammil (C)
+                Team A – Muzammil Ahmed (C)
               </h3>
               <ul className="text-sm space-y-1">
-                <li>Wakar – All Rounder</li>
-                <li>Faizan – All Rounder</li>
+                <li>Wakar Ansari – All Rounder</li>
+                <li>Faizan Akhtar – All Rounder</li>
                 <li>Farhan Lala – Bowler</li>
                 <li>Abdul Shahid – All Rounder</li>
               </ul>
@@ -123,13 +123,13 @@ export default function HomePage() {
                 className="mx-auto mb-2 object-contain"
               />
               <h3 className="text-xl font-semibold text-blue-600 mb-2">
-                Team B – Sohail (C)
+                Team B – Sohail Ansari (C)
               </h3>
               <ul className="text-sm space-y-1">
-                <li>Shahid – All Rounder</li>
-                <li>Zubair – Batter</li>
-                <li>Tehseen – Batter</li>
-                <li>Sohaib – All Rounder</li>
+                <li>Shahid Ahmed – All Rounder</li>
+                <li>Zubair Iqbal – Batter</li>
+                <li>Tehseen Ansari – Batter</li>
+                <li>Sohaib Ansari – All Rounder</li>
               </ul>
             </div>
           </section>
