@@ -1,26 +1,53 @@
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 
 const players = [
   { name: "Muzammil Ahmed (C)", role: "Batter", team: "A" },
-  { name: "Wakar Ansari", role: "All Rounder", team: "A" },
-  { name: "Faizan Akhtar", role: "All Rounder", team: "A" },
-  { name: "Farhan Lala", role: "Bowler", team: "A" },
-  { name: "Abdul Shahid", role: "All Rounder", team: "A" },
-  { name: "Sohail Ansari (C)", role: "All Rounder", team: "B" },
-  { name: "Shahid Ahmed", role: "All Rounder", team: "B" },
-  { name: "Zubair Iqbal", role: "Batter", team: "B" },
-  { name: "Tehseen Ansari", role: "Batter", team: "B" },
-  { name: "Sohaib Ansari", role: "All Rounder", team: "B" },
+  { name: "Wakar Ansari", role: "All Rounder", team: "TBD" },
+  { name: "Faizan Akhtar", role: "All Rounder", team: "TBD" },
+  { name: "Farhan Lala", role: "Bowler", team: "TBD" },
+  { name: "Abdul Shahid", role: "All Rounder", team: "TBD" },
+  { name: "Zubair Iqbal (C)", role: "Batter", team: "B" },
+  { name: "Shahid Ahmed", role: "All Rounder", team: "TBD" },
+  { name: "Tehseen Ansari", role: "Batter", team: "TBD" },
+  { name: "Sohaib Ansari", role: "All Rounder", team: "TBD" },
+  { name: "Anas Majnu", role: "All Rounder", team: "TBD" },
+  { name: "Sufiyan Aao", role: "All Rounder", team: "TBD" },
+  { name: "Sohail Ansari", role: "All Rounder", team: "TBD" },
 ];
 
 export default function HomePage() {
   const [view, setView] = useState("home");
   const [filter, setFilter] = useState("All");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [playerTeams, setPlayerTeams] = useState(players);
+  const [timeLeft, setTimeLeft] = useState("");
+  const [assigningPlayer, setAssigningPlayer] = useState(null);
+  const [isShuffling, setIsShuffling] = useState(false);
+
+  // Countdown Timer Logic
+  useEffect(() => {
+    const targetTime = new Date();
+    targetTime.setHours(23, 0, 0, 0); // 11 PM today
+    const updateTimer = () => {
+      const now = new Date();
+      const diff = targetTime - now;
+      if (diff <= 0) {
+        setTimeLeft("Match Started!");
+        return;
+      }
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+    };
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleMenuClick = (target) => {
-    console.log("Menu clicked, target:", target); // Debugging
+    console.log("Menu clicked, target:", target);
     if (target === "contact") {
       window.location.href = "mailto:sa6426533@gmail.com";
     } else {
@@ -29,13 +56,77 @@ export default function HomePage() {
     setMenuOpen(false);
   };
 
+  const assignRandomPlayer = (team) => {
+    const unassignedPlayers = playerTeams.filter(
+      (player) => player.team === "TBD"
+    );
+    if (unassignedPlayers.length === 0) return;
+
+    setIsShuffling(true);
+    setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * unassignedPlayers.length);
+      const selectedPlayer = unassignedPlayers[randomIndex];
+      setAssigningPlayer(selectedPlayer.name);
+      setTimeout(() => {
+        setPlayerTeams((prev) =>
+          prev.map((player) =>
+            player.name === selectedPlayer.name ? { ...player, team } : player
+          )
+        );
+        setAssigningPlayer(null);
+        setIsShuffling(false);
+      }, 1000); // 1-second delay for assignment
+    }, 1500); // 1.5-second shuffle animation
+  };
+
+  const resetPlayer = (playerName) => {
+    setPlayerTeams((prev) =>
+      prev.map((player) =>
+        player.name === playerName && player.name !== "Muzammil Ahmed (C)" && player.name !== "Zubair Iqbal (C)"
+          ? { ...player, team: "TBD" }
+          : player
+      )
+    );
+  };
+
   const filteredPlayers =
     filter === "All"
-      ? players
-      : players.filter((player) => player.role === filter);
+      ? playerTeams.filter((player) =>
+          player.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : playerTeams.filter(
+          (player) =>
+            player.role === filter &&
+            player.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white text-gray-800 p-6">
+      <style jsx>{`
+        @keyframes slideIn {
+          0% {
+            transform: translateY(-20px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        @keyframes shuffle {
+          0% { opacity: 1; }
+          50% { opacity: 0.5; }
+          100% { opacity: 1; }
+        }
+        .assigning {
+          animation: slideIn 0.5s ease-in-out;
+          background-color: #e0f7fa;
+        }
+        .shuffling {
+          animation: shuffle 0.3s ease-in-out infinite;
+        }
+      `}</style>
+
       {/* Navbar */}
       <nav className="flex justify-between items-center mb-6 relative">
         <h1 className="text-xl font-bold text-blue-700">🏏 DSG Match</h1>
@@ -90,48 +181,103 @@ export default function HomePage() {
               📍 Lalbagh Rd, in front of MPEB Office, near Keer Banglow,
               Mohammadpura, Burhanpur
             </p>
+            <p className="text-xl font-semibold text-red-500 mt-4">
+              Countdown to Match: {timeLeft}
+            </p>
           </header>
 
-          <section className="flex justify-center items-center gap-4 mb-10">
-            <div className="text-center p-4 rounded-xl bg-white border shadow w-64">
-              <Image
-                src="/team-a-logo.png"
-                alt="Team A Logo"
-                width={64}
-                height={64}
-                className="mx-auto mb-2 object-contain"
-              />
-              <h3 className="text-xl font-semibold text-blue-600 mb-2">
+          <section className="flex justify-between items-start gap-8 mb-10 min-h-[50vh] max-w-5xl mx-auto">
+            <div className="text-center p-6 rounded-xl bg-white border shadow w-96">
+              <h3 className="text-2xl font-semibold text-blue-600 mb-4 whitespace-nowrap">
                 Team A – Muzammil Ahmed (C)
               </h3>
-              <ul className="text-sm space-y-1">
-                <li>Wakar Ansari – All Rounder</li>
-                <li>Faizan Akhtar – All Rounder</li>
-                <li>Farhan Lala – Bowler</li>
-                <li>Abdul Shahid – All Rounder</li>
+              <button
+                onClick={() => assignRandomPlayer("A")}
+                className="px-4 py-2 bg-green-600 text-white rounded-full text-sm font-medium hover:bg-green-700 transition-colors duration-200 mb-4"
+                disabled={isShuffling || playerTeams.filter((p) => p.team === "TBD").length === 0}
+              >
+                {isShuffling ? "Shuffling..." : "Tap to Assign"}
+              </button>
+              <ul className="text-base space-y-2">
+                {playerTeams
+                  .filter(
+                    (player) => player.team === "A" && player.name !== "Muzammil Ahmed (C)"
+                  )
+                  .map((player) => (
+                    <li
+                      key={player.name}
+                      className={`flex justify-between items-center whitespace-nowrap ${
+                        assigningPlayer === player.name ? "assigning" : ""
+                      }`}
+                    >
+                      <span>{player.name} – {player.role}</span>
+                      <button
+                        onClick={() => resetPlayer(player.name)}
+                        className="text-sm text-red-500 hover:text-red-700"
+                      >
+                        Reset
+                      </button>
+                    </li>
+                  ))}
               </ul>
             </div>
 
-            <div className="text-3xl font-extrabold text-red-500">⚡ VS ⚡</div>
+            <div className="text-4xl font-extrabold text-red-500 mt-10">⚡ VS ⚡</div>
 
-            <div className="text-center p-4 rounded-xl bg-white border shadow w-64">
-              <Image
-                src="/team-b-logo.png"
-                alt="Team B Logo"
-                width={64}
-                height={64}
-                className="mx-auto mb-2 object-contain"
-              />
-              <h3 className="text-xl font-semibold text-blue-600 mb-2">
-                Team B – Sohail Ansari (C)
+            <div className="text-center p-6 rounded-xl bg-white border shadow w-96">
+              <h3 className="text-2xl font-semibold text-blue-600 mb-4 whitespace-nowrap">
+                Team B – Zubair Iqbal (C)
               </h3>
-              <ul className="text-sm space-y-1">
-                <li>Shahid Ahmed – All Rounder</li>
-                <li>Zubair Iqbal – Batter</li>
-                <li>Tehseen Ansari – Batter</li>
-                <li>Sohaib Ansari – All Rounder</li>
+              <button
+                onClick={() => assignRandomPlayer("B")}
+                className="px-4 py-2 bg-green-600 text-white rounded-full text-sm font-medium hover:bg-green-700 transition-colors duration-200 mb-4"
+                disabled={isShuffling || playerTeams.filter((p) => p.team === "TBD").length === 0}
+              >
+                {isShuffling ? "Shuffling..." : "Tap to Assign"}
+              </button>
+              <ul className="text-base space-y-2">
+                {playerTeams
+                  .filter(
+                    (player) => player.team === "B" && player.name !== "Zubair Iqbal (C)"
+                  )
+                  .map((player) => (
+                    <li
+                      key={player.name}
+                      className={`flex justify-between items-center whitespace-nowrap ${
+                        assigningPlayer === player.name ? "assigning" : ""
+                      }`}
+                    >
+                      <span>{player.name} – {player.role}</span>
+                      <button
+                        onClick={() => resetPlayer(player.name)}
+                        className="text-sm text-red-500 hover:text-red-700"
+                      >
+                        Reset
+                      </button>
+                    </li>
+                  ))}
               </ul>
             </div>
+          </section>
+
+          <section className="bg-white shadow-md rounded-2xl p-6 max-w-3xl mx-auto border border-gray-100 mb-10">
+            <h2 className="text-2xl font-semibold text-green-600 mb-4">
+              📋 Unassigned Players
+            </h2>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {playerTeams
+                .filter((player) => player.team === "TBD")
+                .map((player) => (
+                  <li
+                    key={player.name}
+                    className={`p-4 bg-gray-50 border rounded-xl ${
+                      isShuffling ? "shuffling" : ""
+                    }`}
+                  >
+                    {player.name} – {player.role}
+                  </li>
+                ))}
+            </ul>
           </section>
 
           <section className="bg-white shadow-md rounded-2xl p-6 max-w-3xl mx-auto border border-gray-100">
@@ -157,6 +303,15 @@ export default function HomePage() {
           <h2 className="text-2xl font-bold text-blue-700 text-center mb-6">
             🧢 Player List
           </h2>
+          <div className="flex justify-center mb-4">
+            <input
+              type="text"
+              placeholder="Search players..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="px-4 py-2 border rounded-full text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
           <div className="flex justify-center gap-4 mb-4">
             {["All", "Batter", "Bowler", "All Rounder"].map((type) => (
               <button
@@ -180,6 +335,7 @@ export default function HomePage() {
               >
                 <p className="text-lg font-semibold">{player.name}</p>
                 <p className="text-sm text-gray-600">{player.role}</p>
+                <p className="text-sm text-gray-600">Team: {player.team}</p>
               </li>
             ))}
           </ul>
